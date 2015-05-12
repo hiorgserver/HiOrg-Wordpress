@@ -1,11 +1,11 @@
 <?php
 /*
-  Plugin Name: HiOrgServer-Termine
+  Plugin Name: HiOrg-Server Termine
   Plugin URI: http://www.klebsattel.de
-  Description: Termine Ihres HiOrg-Server in einem Sidebarwidget darstellen.
+  Description: Termine Ihres HiOrg-Server in einem Widget darstellen.
   Version: 0.2
-  Author: Jörg Klebsattel / HiOrg Server GmbH
-  Author URI: http://www.klebsattel.de / http://www.hiorg-server.de
+  Author: Jörg Klebsattel
+  Author URI: http://www.klebsattel.de
   License: GPL
  */
 
@@ -24,27 +24,35 @@ function hiorg_termine() {
     $titel = 'Termine';
     $account = get_option("hiorg_account");
     $anzahl = get_option("hiorg_anzahl");
+    if (!is_numeric($anzahl)) {
+        $anzahl = 5;
+    }
 
     echo '<div class="sidebox">';
     echo '<h3 class="sidetitl">' . $titel . '</h3>';
 
-    $ical = new ICal('https://www.hiorg-server.de/termine.php?ov=' . $account . '&anz=' . $anzahl . '&ical=1');
-    $events = $ical->events();
-    $date = $events[0]['DTSTART'];
+    if (empty($account)) {
+        echo "Bitte zuerst das Organisations-Kürzel in der Widget-Konfiguration eingeben";
+    } else {
 
-    foreach ($events as $event) {
-        $date = $ical->iCalDateToUnixTimestamp($event['DTSTART']) + get_offset_to_gmt_in_seconds();
-        $date_ende = $ical->iCalDateToUnixTimestamp($event['DTEND']) + get_offset_to_gmt_in_seconds();
-        $hiorg_date = date("d.m.Y", $date);
-        $hiorg_starttime = date("H:i", $date);
-        $hiorg_endetime = date("H:i", $date_ende);
-        echo '<div class="textwidget">';
-        echo '<p>';
-        echo '<small>' . $hiorg_date . ' | ' . $hiorg_starttime . '-' . $hiorg_endetime . '</small><br/>';
-        echo '<b>' . $event['SUMMARY'] . '</b><br/>';
-        echo '<small>' . $event['LOCATION'] . '</small><br/><br/>';
-        echo '</p>';
-        echo '</div>';
+        $ical = new ICal('https://www.hiorg-server.de/termine.php?ov=' . $account . '&anz=' . $anzahl . '&ical=1');
+        $events = $ical->events();
+        $date = $events[0]['DTSTART'];
+
+        foreach ($events as $event) {
+            $date = $ical->iCalDateToUnixTimestamp($event['DTSTART']) + get_offset_to_gmt_in_seconds();
+            $date_ende = $ical->iCalDateToUnixTimestamp($event['DTEND']) + get_offset_to_gmt_in_seconds();
+            $hiorg_date = date("d.m.Y", $date);
+            $hiorg_starttime = date("H:i", $date);
+            $hiorg_endetime = date("H:i", $date_ende);
+            echo '<div class="textwidget">';
+            echo '<p>';
+            echo '<small>' . $hiorg_date . ' | ' . $hiorg_starttime . '-' . $hiorg_endetime . '</small><br/>';
+            echo '<b>' . $event['SUMMARY'] . '</b><br/>';
+            echo '<small>' . $event['LOCATION'] . '</small><br/><br/>';
+            echo '</p>';
+            echo '</div>';
+        }
     }
     echo '</div>';
 }
@@ -60,10 +68,10 @@ function hiorg_termine_control() {
     }
     ?>
     <p>
-        <label>Anzahl der Termine:</label>
-        <input type="text" id="anzahl" name="anzahl" value="<?= $anzahl ?>" style="width:250px" />
         <label>Organisations-Kürzel:</label>
         <input type="text" id="hiorg-account" name="hiorg-account" value="<?= $account ?>" style="width:250px" />
+        <label>Anzahl der Termine:</label>
+        <input type="text" id="anzahl" name="anzahl" value="<?= $anzahl ?>" style="width:250px" />
         <input type="hidden" id="hiorg-submit" name="hiorg-submit" value="1" />
     </p>
     <?php
@@ -76,4 +84,3 @@ function get_offset_to_gmt_in_seconds() {
 
     return $offset;
 }
-
