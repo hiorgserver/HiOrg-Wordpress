@@ -31,5 +31,5 @@ nothing here
 Good news, this plugin is free for everyone! Since it's released under the GPL, you can use it free of charge on your personal or commercial blog.
 
 == Changelog ==
-= v0.2 (2015-05-12) =
+= v0.3 (2015-05-12) =
 * Erste Veröffentlichung des Plugins.
