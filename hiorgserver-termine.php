@@ -3,7 +3,7 @@
   Plugin Name: HiOrg-Server Termine
   Plugin URI: http://www.klebsattel.de
   Description: Termine Ihres HiOrg-Server in einem Widget darstellen.
-  Version: 0.3
+  Version: 0.4
   Author: Jörg Klebsattel
   Author URI: http://www.klebsattel.de
   License: GPL
@@ -48,7 +48,7 @@ function hiorg_termine() {
             echo '<div class="textwidget">';
             echo '<p>';
             echo '<small>' . $hiorg_date . ' | ' . $hiorg_starttime . '-' . $hiorg_endetime . '</small><br/>';
-            echo '<b>' . $event['SUMMARY'] . '</b><br/>';
+            echo '<b>' . stripslashes($event['SUMMARY']) . '</b><br/>';
             echo '<small>' . $event['LOCATION'] . '</small><br/>';
             echo '</p>';
             echo '</div>';

@@ -31,5 +31,7 @@ nothing here
 Good news, this plugin is free for everyone! Since it's released under the GPL, you can use it free of charge on your personal or commercial blog.
 
 == Changelog ==
+= v0.4 (2015-05-27) =
+* Backslash vor Sonderzeichen wurde entfernt
 = v0.3 (2015-05-12) =
 * Erste Veröffentlichung des Plugins.
