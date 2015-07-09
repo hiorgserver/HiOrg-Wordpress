@@ -8,7 +8,7 @@ License: GPL
 Dieses Plugin zeigt in einem Widget die öffentlichen Terminen aus dem HiOrg-Server Ihrer Organisation an.
 
 == Description ==
-Dieses Plugin zeigt in einem Widget die öffentlichen Terminen aus dem [HiOrg-Server](http://www.hiorg-server.de "HiOrg-Server") Ihrer Organisation an.
+Wenn Sie die Webseite Ihrer Organisation über das CMS WordPress betreiben, können Sie mit dem Plugin „HiOrg-Server“ ganz unkompliziert die öffentlichen Termine (und ggf. auch Einsätze oder Kurstermine der Breitenausbildung) in Ihre WordPress-Website integrieren.
 
 == Installation ==
 = Requirements =
