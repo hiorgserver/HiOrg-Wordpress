@@ -54,7 +54,7 @@ function hiorg_termine() {
             echo '<p>';
             echo '<small>' . $hiorg_date . ' | ' . $hiorg_starttime . '-' . $hiorg_endetime . '</small><br/>';
             echo '<b>' . stripslashes($event['SUMMARY']) . '</b><br/>';
-            echo '<small>' . $event['LOCATION'] . '</small><br/>';
+            echo '<small>' . stripslashes($event['LOCATION']) . '</small><br/>';
             echo '</p>';
             echo '</div>';
         }
