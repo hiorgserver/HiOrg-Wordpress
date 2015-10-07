@@ -3,7 +3,7 @@
   Plugin Name: HiOrg-Server Termine
   Plugin URI: http://www.klebsattel.de
   Description: Termine Ihres HiOrg-Server in einem Widget darstellen.
-  Version: 0.5
+  Version: 0.6
   Author: Jörg Klebsattel
   Author URI: http://www.klebsattel.de
   License: GPL
@@ -45,8 +45,10 @@ function hiorg_termine() {
         $date = $events[0]['DTSTART'];
 
         foreach ($events as $event) {
-            $date = $ical->iCalDateToUnixTimestamp($event['DTSTART']) + get_offset_to_gmt_in_seconds();
-            $date_ende = $ical->iCalDateToUnixTimestamp($event['DTEND']) + get_offset_to_gmt_in_seconds();
+			date_default_timezone_set('UTC');
+            $date = $ical->iCalDateToUnixTimestamp($event['DTSTART']);
+            $date_ende = $ical->iCalDateToUnixTimestamp($event['DTEND']);
+			date_default_timezone_set('Europe/Berlin');
             $hiorg_date = date("d.m.Y", $date);
             $hiorg_starttime = date("H:i", $date);
             $hiorg_endetime = date("H:i", $date_ende);
@@ -85,12 +87,4 @@ function hiorg_termine_control() {
         <input type="hidden" id="hiorg-submit" name="hiorg-submit" value="1" />
     </p>
     <?php
-}
-
-function get_offset_to_gmt_in_seconds() {
-
-    $current_timezone_offset = get_option('gmt_offset');
-    $offset = $current_timezone_offset * 3600;
-
-    return $offset;
 }
