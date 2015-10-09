@@ -31,6 +31,8 @@ nothing here
 Good news, this plugin is free for everyone! Since it's released under the GPL, you can use it free of charge on your personal or commercial blog.
 
 == Changelog ==
+= v0.7 (2015-10-09) =
+* Im Widget können nun auch die Links zu den einzelnen Terminen im HiOrg-Server angezeigt werden.
 = v0.6 (2015-10-07) =
 * Problem mit Zeitzonen bzw. Sommer- und Winterzeit behoben
 = v0.5 (2015-07-08) =

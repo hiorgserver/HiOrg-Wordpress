@@ -3,7 +3,7 @@
   Plugin Name: HiOrg-Server Termine
   Plugin URI: http://www.klebsattel.de
   Description: Termine Ihres HiOrg-Server in einem Widget darstellen.
-  Version: 0.6
+  Version: 0.7
   Author: Jörg Klebsattel
   Author URI: http://www.klebsattel.de
   License: GPL
@@ -25,6 +25,7 @@ function hiorg_termine() {
     $account = get_option("hiorg_account");
     $anzahl = get_option("hiorg_anzahl");
     $monate = get_option("hiorg_monate");
+	$link = get_option("hiorg_link");
 
     echo '<div class="sidebox">';
     echo '<h3 class="sidetitl">' . $titel . '</h3>';
@@ -54,7 +55,11 @@ function hiorg_termine() {
             $hiorg_endetime = date("H:i", $date_ende);
             echo '<div class="textwidget">';
             echo '<p>';
-            echo '<small>' . $hiorg_date . ' | ' . $hiorg_starttime . '-' . $hiorg_endetime . '</small><br/>';
+			if($link == "Ja") {
+				echo '<small> '. $link . $hiorg_date . ' | ' . $hiorg_starttime . '-' . $hiorg_endetime . ' </small><a href="' . $event['X-URL'] . '" target="_blank"><img src="/wp-content/plugins/hiorgserver-terminliste/images/link.png" height="10" width="10"></a><br/>';
+			} else {
+				echo '<small> '. $link . $hiorg_date . ' | ' . $hiorg_starttime . '-' . $hiorg_endetime . ' </small><br/>';
+			}
             echo '<b>' . stripslashes($event['SUMMARY']) . '</b><br/>';
             echo '<small>' . stripslashes($event['LOCATION']) . '</small><br/>';
             echo '</p>';
@@ -69,9 +74,11 @@ function hiorg_termine_control() {
         $account = trim($_POST['hiorg-account']);
         $anzahl = trim($_POST['hiorg-anzahl']);
         $monate = trim($_POST['hiorg-monate']);
+		$link = trim($_POST['hiorg-link']);
         update_option("hiorg_account", $account);
         update_option("hiorg_anzahl", $anzahl);
         update_option("hiorg_monate", $monate);
+		update_option("hiorg_link", $link);
     }
     ?>
     <p>
@@ -84,7 +91,11 @@ function hiorg_termine_control() {
         <br />
         <label for="hiorg-monate">Zeitraum:</label>
         <input type="text" id="hiorg-monate" name="hiorg-monate" value="<?= $monate ?>" style="width:250px" /> Monate
-        <input type="hidden" id="hiorg-submit" name="hiorg-submit" value="1" />
+        
+		<label for="hiorg-link">Link zum Termin anzeigen? </label>
+        <input type="text" id="hiorg-link" name="hiorg-link" value="<?= $link ?>" style="width:250px" /> Ja/Nein
+		
+		<input type="hidden" id="hiorg-submit" name="hiorg-submit" value="1" <?php checked( $options['postlink'], 1 ); ?> />
     </p>
     <?php
 }
