@@ -3,7 +3,7 @@
   Plugin Name: HiOrg-Server Termine
   Plugin URI: http://www.klebsattel.de
   Description: Termine Ihres HiOrg-Server in einem Widget darstellen.
-  Version: 0.7
+  Version: 0.8
   Author: Jörg Klebsattel
   Author URI: http://www.klebsattel.de
   License: GPL
@@ -56,9 +56,9 @@ function hiorg_termine() {
             echo '<div class="textwidget">';
             echo '<p>';
 			if($link == "Ja") {
-				echo '<small> '. $link . $hiorg_date . ' | ' . $hiorg_starttime . '-' . $hiorg_endetime . ' </small><a href="' . $event['X-URL'] . '" target="_blank"><img src="/wp-content/plugins/hiorgserver-terminliste/images/link.png" height="10" width="10"></a><br/>';
+				echo '<small>' . $hiorg_date . ' | ' . $hiorg_starttime . '-' . $hiorg_endetime . ' </small><a href="' . $event['X-URL'] . '" target="_blank"><img src="/wp-content/plugins/hiorgserver-terminliste/images/link.png" height="10" width="10"></a><br/>';
 			} else {
-				echo '<small> '. $link . $hiorg_date . ' | ' . $hiorg_starttime . '-' . $hiorg_endetime . ' </small><br/>';
+				echo '<small>' . $hiorg_date . ' | ' . $hiorg_starttime . '-' . $hiorg_endetime . ' </small><br/>';
 			}
             echo '<b>' . stripslashes($event['SUMMARY']) . '</b><br/>';
             echo '<small>' . stripslashes($event['LOCATION']) . '</small><br/>';
