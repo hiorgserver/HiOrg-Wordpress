@@ -31,6 +31,8 @@ nothing here
 Gute Nachrichten! Dieses Plugin kann von jedem genutzt werden. Da es unter der GPL veröffentlicht wurde, kann es auf jedem privaten und kommerziellen Blog benutzt werden.
  
 == Changelog ==
+= v0.10 (2015-11-27) =
+* Anpassungen für das Theme drkwp
 = v0.9 (2015-11-25) =
 * Kein Fehler, wenn keine Termine vorhanden
 = v0.8 (2015-10-09) =
