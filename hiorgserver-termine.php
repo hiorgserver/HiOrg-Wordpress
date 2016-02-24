@@ -3,7 +3,7 @@
   Plugin Name: HiOrg-Server Termine
   Plugin URI: http://www.klebsattel.de
   Description: Termine Ihres HiOrg-Server in einem Widget darstellen.
-  Version: 0.10
+  Version: 0.11
   Author: Jörg Klebsattel
   Author URI: http://www.klebsattel.de
   License: GPL
@@ -47,20 +47,22 @@ function hiorg_termine() {
             echo '<div class="textwidget">Keine Termine</div>';
         } else {
             foreach ($events as $event) {
-                date_default_timezone_set('UTC');
+                //date_default_timezone_set('UTC');
+				date_default_timezone_set('Europe/Berlin');
                 $date = $ical->iCalDateToUnixTimestamp($event['DTSTART']);
                 $date_ende = $ical->iCalDateToUnixTimestamp($event['DTEND']);
-                date_default_timezone_set('Europe/Berlin');
+                //date_default_timezone_set('Europe/Berlin');
                 $hiorg_date = date("d.m.Y", $date);
                 $hiorg_starttime = date("H:i", $date);
                 $hiorg_endetime = date("H:i", $date_ende);
                 echo '<div class="hiorgtermine">';
                 echo '<p>';
-                if ($link == "Ja") {
+                /*if ($link == "Ja") {
                     echo '<small>' . $hiorg_date . ' | ' . $hiorg_starttime . '-' . $hiorg_endetime . ' </small><a href="' . $event['X-URL'] . '" target="_blank"><img src="/wp-content/plugins/hiorgserver-terminliste/images/link.png" height="10" width="10"></a><br/>';
                 } else {
                     echo '<small>' . $hiorg_date . ' | ' . $hiorg_starttime . '-' . $hiorg_endetime . ' </small><br/>';
-                }
+                }*/
+				echo '<small>' . $hiorg_date . ' |  </small><small><a href="' . $event['X-URL'] . '" target="_blank">Details</a><br/></small>';
                 echo '<b>' . stripslashes($event['SUMMARY']) . '</b><br/>';
                 echo '<small>' . stripslashes($event['LOCATION']) . '</small><br/>';
                 echo '</p>';
@@ -93,9 +95,6 @@ function hiorg_termine_control() {
         <br />
         <label for="hiorg-monate">Zeitraum:</label>
         <input type="text" id="hiorg-monate" name="hiorg-monate" value="<?= $monate ?>" style="width:250px" /> Monate
-
-        <label for="hiorg-link">Link zum Termin anzeigen? </label>
-        <input type="text" id="hiorg-link" name="hiorg-link" value="<?= $link ?>" style="width:250px" /> Ja/Nein
 
         <input type="hidden" id="hiorg-submit" name="hiorg-submit" value="1" <?php checked($options['postlink'], 1); ?> />
     </p>

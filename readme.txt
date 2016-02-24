@@ -2,7 +2,7 @@
 Contributors: babsitz,hiorgserver
 Tags: hiorg-server, drk, terminliste, hiorg, hiorg server
 Requires at least: 3.0
-Tested up to: 4.3.1
+Tested up to: 4.4.2
 License: GPL
 
 Dieses Plugin zeigt in einem Widget die öffentlichen Terminen aus dem HiOrg-Server Ihrer Organisation an.
@@ -12,7 +12,7 @@ Dieses Plugin zeigt in einem Widget die öffentlichen Terminen aus dem [HiOrg-Se
  
 == Installation ==
 = Voraussetzungen =
-* WordPress Version 3.0 und später (getestet mit 4.3.x)
+* WordPress Version 3.0 und später (getestet mit 4.4.x)
  
 = Installation =
 1. Plugin im Menü 'Plugins' installieren und aktivieren
@@ -31,8 +31,10 @@ nothing here
 Gute Nachrichten! Dieses Plugin kann von jedem genutzt werden. Da es unter der GPL veröffentlicht wurde, kann es auf jedem privaten und kommerziellen Blog benutzt werden.
  
 == Changelog ==
+= v0.11 (2016-02-24) =
+* Leider hat es in der Übersicht immer Probleme mit den Uhrzeiten gegeben. Dieses Problem wurde nun behoben. Anstatt der Uhrzeiten wird nun ein Link zu den Termindetails angezeigt.
 = v0.10 (2015-11-27) =
-* Anpassungen für das Theme drkwp
+* Auf das Theme drkwp abgestimmt
 = v0.9 (2015-11-25) =
 * Kein Fehler, wenn keine Termine vorhanden
 = v0.8 (2015-10-09) =
