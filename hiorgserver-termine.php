@@ -3,7 +3,7 @@
   Plugin Name: HiOrg-Server Termine
   Plugin URI: http://www.klebsattel.de
   Description: Termine Ihres HiOrg-Server in einem Widget darstellen.
-  Version: 0.11
+  Version: 0.12
   Author: Jörg Klebsattel
   Author URI: http://www.klebsattel.de
   License: GPL
@@ -26,7 +26,7 @@ function hiorg_termine() {
     $anzahl = get_option("hiorg_anzahl");
     $monate = get_option("hiorg_monate");
     $link = get_option("hiorg_link");
-
+date_default_timezone_set('Europe/Berlin');
     echo '<div class="sidebox">';
     echo '<h3 class="sidetitl">' . $titel . '</h3>';
 	
@@ -47,22 +47,20 @@ function hiorg_termine() {
             echo '<div class="textwidget">Keine Termine</div>';
         } else {
             foreach ($events as $event) {
-                //date_default_timezone_set('UTC');
-				date_default_timezone_set('Europe/Berlin');
                 $date = $ical->iCalDateToUnixTimestamp($event['DTSTART']);
                 $date_ende = $ical->iCalDateToUnixTimestamp($event['DTEND']);
-                //date_default_timezone_set('Europe/Berlin');
+                
                 $hiorg_date = date("d.m.Y", $date);
                 $hiorg_starttime = date("H:i", $date);
+				$hiorg_starthour = date("H", $date) + repairTime($hiorg_date);
+				$hiorg_startminute = date("i", $date);
                 $hiorg_endetime = date("H:i", $date_ende);
+				$hiorg_endehour = date("H", $date_ende) + repairTime($hiorg_date);
+				$hiorg_endeminute = date("i", $date_ende);
                 echo '<div class="hiorgtermine">';
                 echo '<p>';
-                /*if ($link == "Ja") {
-                    echo '<small>' . $hiorg_date . ' | ' . $hiorg_starttime . '-' . $hiorg_endetime . ' </small><a href="' . $event['X-URL'] . '" target="_blank"><img src="/wp-content/plugins/hiorgserver-terminliste/images/link.png" height="10" width="10"></a><br/>';
-                } else {
-                    echo '<small>' . $hiorg_date . ' | ' . $hiorg_starttime . '-' . $hiorg_endetime . ' </small><br/>';
-                }*/
-				echo '<small>' . $hiorg_date . ' |  </small><small><a href="' . $event['X-URL'] . '" target="_blank">Details</a><br/></small>';
+				echo '<small>' . $hiorg_date . ' | ' . $hiorg_starthour .":" . $hiorg_startminute . '-' . $hiorg_endehour .":" . $hiorg_endeminute . ' </small><br/>';
+				//echo '<small>' . $hiorg_date . ' |  </small><small><a href="' . $event['X-URL'] . '" target="_blank">Details</a><br/></small>';
                 echo '<b>' . stripslashes($event['SUMMARY']) . '</b><br/>';
                 echo '<small>' . stripslashes($event['LOCATION']) . '</small><br/>';
                 echo '</p>';
@@ -99,4 +97,16 @@ function hiorg_termine_control() {
         <input type="hidden" id="hiorg-submit" name="hiorg-submit" value="1" <?php checked($options['postlink'], 1); ?> />
     </p>
     <?php
+}
+
+function repairTime($datum) {
+	/*	0= keine Sommerzeit (gmt+1) 
+		1= Sommerzeit (gmt+2)
+	*/
+	if (date('I', strtotime($datum)) == 0) {
+		$zeitzone = 1; //Winterzeit
+	} else {
+		$zeitzone = 2; //Sommerzeit
+	}
+	return $zeitzone; 
 }
