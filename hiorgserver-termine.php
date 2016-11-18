@@ -3,7 +3,7 @@
   Plugin Name: HiOrg-Server Termine
   Plugin URI: http://www.klebsattel.de
   Description: Termine Ihres HiOrg-Server in einem Widget darstellen.
-  Version: 0.12
+  Version: 0.13
   Author: Jörg Klebsattel
   Author URI: http://www.klebsattel.de
   License: GPL
@@ -35,6 +35,7 @@ date_default_timezone_set('Europe/Berlin');
     } else {
 
         $url = 'https://www.hiorg-server.de/termine.php?ical=1&ov=' . $account;
+		
         if (is_numeric($anzahl)) {
             $url .= "&anzahl=" . $anzahl;
         }
@@ -50,19 +51,15 @@ date_default_timezone_set('Europe/Berlin');
                 $date = $ical->iCalDateToUnixTimestamp($event['DTSTART']);
                 $date_ende = $ical->iCalDateToUnixTimestamp($event['DTEND']);
                 
-                $hiorg_date = date("d.m.Y", $date);
-                $hiorg_starttime = date("H:i", $date);
-				$hiorg_starthour = date("H", $date) + repairTime($hiorg_date);
-				$hiorg_startminute = date("i", $date);
-                $hiorg_endetime = date("H:i", $date_ende);
-				$hiorg_endehour = date("H", $date_ende) + repairTime($hiorg_date);
-				$hiorg_endeminute = date("i", $date_ende);
-                echo '<div class="hiorgtermine">';
+                $hiorg_date = date("d.m.Y", $date);		
+				$hiorg_starttime = date("H:i", $date + (repairTime($hiorg_date) * 60 * 60));
+				$hiorg_endetime = date("H:i", $date_ende + (repairTime($date_ende) * 60 * 60));
+				echo '<div class="hiorgtermine">';
                 echo '<p>';
-				echo '<small>' . $hiorg_date . ' | ' . $hiorg_starthour .":" . $hiorg_startminute . '-' . $hiorg_endehour .":" . $hiorg_endeminute . ' </small><br/>';
-				//echo '<small>' . $hiorg_date . ' |  </small><small><a href="' . $event['X-URL'] . '" target="_blank">Details</a><br/></small>';
+				echo '<small>' . $hiorg_date . ' | ' . $hiorg_starttime . '-' . $hiorg_endetime . ' </small><br/>';
                 echo '<b>' . stripslashes($event['SUMMARY']) . '</b><br/>';
-                echo '<small>' . stripslashes($event['LOCATION']) . '</small><br/>';
+				
+                echo '<small>' . repairZeilenumbruch($event['LOCATION']) . '</small><br/>';
                 echo '</p>';
                 echo '</div>';
             }
@@ -83,7 +80,8 @@ function hiorg_termine_control() {
         update_option("hiorg_link", $link);
     }
     ?>
-    <p>
+    	
+	<p>
         <label for="hiorg-account">Organisations-K&uuml;rzel:</label>
         <input type="text" id="hiorg-account" name="hiorg-account" value="<?= $account ?>" style="width:250px" />
         <br />
@@ -98,7 +96,11 @@ function hiorg_termine_control() {
     </p>
     <?php
 }
-
+function repairZeilenumbruch($str2repair){
+//$str2repair = str_replace('\n', PHP_EOL, $str2repair); => würde keinen neuen Zeilenumbruch machen, aber dafür \n entfernen
+	$str2repair = str_replace("\\n", "<br/>", $str2repair);
+	return stripslashes($str2repair);
+}
 function repairTime($datum) {
 	/*	0= keine Sommerzeit (gmt+1) 
 		1= Sommerzeit (gmt+2)

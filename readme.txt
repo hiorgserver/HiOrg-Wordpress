@@ -31,6 +31,8 @@ nothing here
 Gute Nachrichten! Dieses Plugin kann von jedem genutzt werden. Da es unter der GPL veröffentlicht wurde, kann es auf jedem privaten und kommerziellen Blog benutzt werden.
  
 == Changelog ==
+= v0.13 (2016-11-18) =
+* Die Berechnung der richtigen "Zeitzone" wurde optimiert. Der Zeilenumbruch bei der Eventlocation wurde berichtigt.
 = v0.12 (2016-11-17) =
 * Nach dem HiOrg-Server-Update war der Link "Details" nicht mehr nutzbar. Da das Problem mit der Sommer- und Winterzeit gelöst wurde, wurde der Link entfernt und in dem Widget werden nun Start- und Endezeit wieder angezeigt.
 = v0.11 (2016-02-24) =
