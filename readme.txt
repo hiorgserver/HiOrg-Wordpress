@@ -31,6 +31,8 @@ nothing here
 Gute Nachrichten! Dieses Plugin kann von jedem genutzt werden. Da es unter der GPL veröffentlicht wurde, kann es auf jedem privaten und kommerziellen Blog benutzt werden.
  
 == Changelog ==
+= v1.0 (2016-11-25) =
+* Umstellung auf JSON.
 = v0.13 (2016-11-18) =
 * Die Berechnung der richtigen "Zeitzone" wurde optimiert. Der Zeilenumbruch bei der Eventlocation wurde berichtigt.
 = v0.12 (2016-11-17) =

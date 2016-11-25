@@ -3,15 +3,11 @@
   Plugin Name: HiOrg-Server Termine
   Plugin URI: http://www.klebsattel.de
   Description: Termine Ihres HiOrg-Server in einem Widget darstellen.
-  Version: 0.13
+  Version: 1.0
   Author: Jörg Klebsattel
   Author URI: http://www.klebsattel.de
   License: GPL
  */
-
-// TODO: Code umschreiben, damit er die Daten per JSON abruft - dann wird das Parsen des iCal unnötig
-
-require 'class.iCalReader.php';
 
 add_action('plugins_loaded', 'hiorgservertermine_init');
 
@@ -26,7 +22,7 @@ function hiorg_termine() {
     $anzahl = get_option("hiorg_anzahl");
     $monate = get_option("hiorg_monate");
     $link = get_option("hiorg_link");
-date_default_timezone_set('Europe/Berlin');
+    date_default_timezone_set('Europe/Berlin');
     echo '<div class="sidebox">';
     echo '<h3 class="sidetitl">' . $titel . '</h3>';
 	
@@ -34,7 +30,7 @@ date_default_timezone_set('Europe/Berlin');
         echo "Bitte zuerst das Organisations-K&uuml;rzel in der Widget-Konfiguration eingeben";
     } else {
 
-        $url = 'https://www.hiorg-server.de/termine.php?ical=1&ov=' . $account;
+        $url = 'https://www.hiorg-server.de/termine.php?json=1&ov=' . $account;
 		
         if (is_numeric($anzahl)) {
             $url .= "&anzahl=" . $anzahl;
@@ -42,27 +38,34 @@ date_default_timezone_set('Europe/Berlin');
         if (is_numeric($monate)) {
             $url .= "&monate=" . $monate;
         }
-        $ical = new ICal($url);
-        $events = $ical->events();
-        if (!is_array($events) || !sizeof($events)) {
-            echo '<div class="textwidget">Keine Termine</div>';
-        } else {
+
+        $events = file_get_contents($url);
+	    $events_objekt = json_decode($events);
+
+        if ($events_objekt->{'success'} == 1) {
+        
+			$events = repairJSON($events);
+            $events = str_replace("},", "};", $events);
+            $events = explode(";", $events);
+            $counter = 0;
+
             foreach ($events as $event) {
-                $date = $ical->iCalDateToUnixTimestamp($event['DTSTART']);
-                $date_ende = $ical->iCalDateToUnixTimestamp($event['DTEND']);
-                
-                $hiorg_date = date("d.m.Y", $date);		
-				$hiorg_starttime = date("H:i", $date + (repairTime($hiorg_date) * 60 * 60));
-				$hiorg_endetime = date("H:i", $date_ende + (repairTime($date_ende) * 60 * 60));
-				echo '<div class="hiorgtermine">';
+                $event= json_decode($events[$counter]);
+                $hiorg_date = date('d.m.Y', $event->{'sortdate'});
+                $hiorg_starttime = date("H:i", $event->{'sortdate'});
+                $hiorg_endetime = date('H:i', $event->{'enddate'});
+                $counter = $counter + 1;
+
+                echo '<div class="hiorgtermine">';
                 echo '<p>';
 				echo '<small>' . $hiorg_date . ' | ' . $hiorg_starttime . '-' . $hiorg_endetime . ' </small><br/>';
-                echo '<b>' . stripslashes($event['SUMMARY']) . '</b><br/>';
-				
-                echo '<small>' . repairZeilenumbruch($event['LOCATION']) . '</small><br/>';
+                echo '<b>' . stripslashes($event->{'verbez'}) . '</b><br/>';
+                echo '<small>' . repairZeilenumbruch($event->{'verort'}) . '</small><br/>';
                 echo '</p>';
                 echo '</div>';
             }
+        } else {
+            echo '<div class="textwidget">Keine Termine</div>';
         }
     }
     echo '</div>';
@@ -100,7 +103,8 @@ function repairZeilenumbruch($str2repair){
 //$str2repair = str_replace('\n', PHP_EOL, $str2repair); => würde keinen neuen Zeilenumbruch machen, aber dafür \n entfernen
 	$str2repair = str_replace("\\n", "<br/>", $str2repair);
 	return stripslashes($str2repair);
-}
+	}
+	
 function repairTime($datum) {
 	/*	0= keine Sommerzeit (gmt+1) 
 		1= Sommerzeit (gmt+2)
@@ -111,4 +115,9 @@ function repairTime($datum) {
 		$zeitzone = 2; //Sommerzeit
 	}
 	return $zeitzone; 
-}
+	}
+	
+function repairJSON($str2cut){
+		$str2cut = substr ( $str2cut, 63, -2 );
+		return $str2cut;
+	}
