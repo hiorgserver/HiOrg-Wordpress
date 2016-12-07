@@ -3,7 +3,7 @@
   Plugin Name: HiOrg-Server Termine
   Plugin URI: http://www.klebsattel.de
   Description: Termine Ihres HiOrg-Server in einem Widget darstellen.
-  Version: 1.0
+  Version: 1.0.1
   Author: Jörg Klebsattel
   Author URI: http://www.klebsattel.de
   License: GPL
