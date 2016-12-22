@@ -31,6 +31,8 @@ nothing here
 Gute Nachrichten! Dieses Plugin kann von jedem genutzt werden. Da es unter der GPL veröffentlicht wurde, kann es auf jedem privaten und kommerziellen Blog benutzt werden.
  
 == Changelog ==
+= v1.0.2 (2016-12-22) =
+Fehler mit der Anzeige, wenn keine öffentlichen Termine vorhanden sind, wurde behoben.
 = v1.0.1 (2016-12-7) =
 * Getestet mit WordPress 4.7
 = v1.0 (2016-11-25) =

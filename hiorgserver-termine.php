@@ -3,7 +3,7 @@
   Plugin Name: HiOrg-Server Termine
   Plugin URI: http://www.klebsattel.de
   Description: Termine Ihres HiOrg-Server in einem Widget darstellen.
-  Version: 1.0.1
+  Version: 1.0.2
   Author: Jörg Klebsattel
   Author URI: http://www.klebsattel.de
   License: GPL
@@ -48,24 +48,28 @@ function hiorg_termine() {
             $events = str_replace("},", "};", $events);
             $events = explode(";", $events);
             $counter = 0;
-
-            foreach ($events as $event) {
-                $event= json_decode($events[$counter]);
-                $hiorg_date = date('d.m.Y', $event->{'sortdate'});
-                $hiorg_starttime = date("H:i", $event->{'sortdate'});
-                $hiorg_endetime = date('H:i', $event->{'enddate'});
-                $counter = $counter + 1;
-
-                echo '<div class="hiorgtermine">';
-                echo '<p>';
-				echo '<small>' . $hiorg_date . ' | ' . $hiorg_starttime . '-' . $hiorg_endetime . ' </small><br/>';
-                echo '<b>' . stripslashes($event->{'verbez'}) . '</b><br/>';
-                echo '<small>' . repairZeilenumbruch($event->{'verort'}) . '</small><br/>';
-                echo '</p>';
-                echo '</div>';
-            }
-        } else {
-            echo '<div class="textwidget">Keine Termine</div>';
+			
+			foreach ($events as $event) {
+				$event= json_decode($events[$counter]);
+				$hiorg_date = date('d.m.Y', $event->{'sortdate'});
+				$hiorg_starttime = date("H:i", $event->{'sortdate'});
+				$hiorg_endetime = date('H:i', $event->{'enddate'});
+				$counter = $counter + 1;
+				
+				if ($hiorg_date != "01.01.1970") {
+					echo '<div class="hiorgtermine">';
+					echo '<p>';
+					echo '<small>' . $hiorg_date . ' | ' . $hiorg_starttime . '-' . $hiorg_endetime . ' </small><br/>';
+					echo '<b>' . stripslashes($event->{'verbez'}) . '</b><br/>';
+					echo '<small>' . repairZeilenumbruch($event->{'verort'}) . '</small><br/>';
+					echo '</p>';
+					echo '</div>';
+				} else {
+					echo '<div class="textwidget"><p>Keine Termine</p></div>';
+				} /**Keine Termine*/
+			}
+        } else { /*Verbindung fehlgesschlagen*/
+            echo '<div class="textwidget"><p>Keine Termine</p></div>';
         }
     }
     echo '</div>';
