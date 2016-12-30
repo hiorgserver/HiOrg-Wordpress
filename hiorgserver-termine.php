@@ -3,7 +3,7 @@
   Plugin Name: HiOrg-Server Termine
   Plugin URI: http://www.klebsattel.de
   Description: Termine Ihres HiOrg-Server in einem Widget darstellen.
-  Version: 1.0.2
+  Version: 1.1.0
   Author: Jörg Klebsattel
   Author URI: http://www.klebsattel.de
   License: GPL
@@ -28,6 +28,7 @@ function hiorg_termine() {
 	
     if (empty($account)) {
         echo "Bitte zuerst das Organisations-K&uuml;rzel in der Widget-Konfiguration eingeben";
+		echo '</div>';
     } else {
 
         $url = 'https://www.hiorg-server.de/termine.php?json=1&ov=' . $account;
@@ -64,6 +65,7 @@ function hiorg_termine() {
 					echo '<small>' . repairZeilenumbruch($event->{'verort'}) . '</small><br/>';
 					echo '</p>';
 					echo '</div>';
+					
 				} else {
 					echo '<div class="textwidget"><p>Keine Termine</p></div>';
 				} /**Keine Termine*/
@@ -71,8 +73,17 @@ function hiorg_termine() {
         } else { /*Verbindung fehlgesschlagen*/
             echo '<div class="textwidget"><p>Keine Termine</p></div>';
         }
+		echo '</div>'; /*Ende Terminwidget*/
+		
+		/*Linkwidget*/
+		if ( $link == 'linkZeigen' ) {
+			echo '<div class="sidebox">';
+			echo '<h3 class="sidetitl">HiOrg-Server</h3><li id="twitter" class="social">';
+			echo '<p><a href="https://www.hiorg-server.de/index.php?ov='.$account.'" target="_blank" ><img src="/wp-content/plugins/hiorgserver-terminliste/images/hiorgserver.jpg" /></a></p>';
+			echo '</li>';
+			echo '</div>';	
+		}
     }
-    echo '</div>';
 }
 
 function hiorg_termine_control() {
@@ -80,25 +91,25 @@ function hiorg_termine_control() {
         $account = trim($_POST['hiorg-account']);
         $anzahl = trim($_POST['hiorg-anzahl']);
         $monate = trim($_POST['hiorg-monate']);
-        $link = trim($_POST['hiorg-link']);
+        $link = trim($_POST['hiorg_link']);
         update_option("hiorg_account", $account);
         update_option("hiorg_anzahl", $anzahl);
         update_option("hiorg_monate", $monate);
         update_option("hiorg_link", $link);
     }
+	
     ?>
     	
 	<p>
-        <label for="hiorg-account">Organisations-K&uuml;rzel:</label>
-        <input type="text" id="hiorg-account" name="hiorg-account" value="<?= $account ?>" style="width:250px" />
-        <br />
-        Weitere Parameter: <small>(optional)</small><br />
-        <label for="hiorg-anzahl">Anzahl der Termine:</label>
-        <input type="text" id="hiorg-anzahl" name="hiorg-anzahl" value="<?= $anzahl ?>" style="width:250px" />
-        <br />
-        <label for="hiorg-monate">Zeitraum:</label>
-        <input type="text" id="hiorg-monate" name="hiorg-monate" value="<?= $monate ?>" style="width:250px" /> Monate
-
+        <p><label for="hiorg-account"><b>Organisations-K&uuml;rzel:</b></label>
+        <input type="text" id="hiorg-account" name="hiorg-account" value="<?= $account ?>" style="width:250px" /></p>
+     
+        <b>Weitere Parameter:</b> <small>(optional)</small><br />
+        <p><label for="hiorg-anzahl">Anzahl der Termine:</label>
+        <input type="text" id="hiorg-anzahl" name="hiorg-anzahl" value="<?= $anzahl ?>" style="width:50px" /></p>
+        <p><label for="hiorg-monate">Zeitraum:</label>
+        <input type="text" id="hiorg-monate" name="hiorg-monate" value="<?= $monate ?>" style="width:50px" /> Monate</p>
+		<p><label><input type="checkbox" name="hiorg_link" value="linkZeigen">Link für Helfer auf Startseite anzeigen.</label></p>
         <input type="hidden" id="hiorg-submit" name="hiorg-submit" value="1" <?php checked($options['postlink'], 1); ?> />
     </p>
     <?php
