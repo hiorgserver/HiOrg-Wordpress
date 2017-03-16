@@ -31,9 +31,9 @@ nothing here
 Gute Nachrichten! Dieses Plugin kann von jedem genutzt werden. Da es unter der GPL veröffentlicht wurde, kann es auf jedem privaten und kommerziellen Blog benutzt werden.
  
 == Changelog ==
-= v1.2.0 (2017-01-29) =
-* Getestet mit WordPress 4.7.2
-* Wenn kein Veranstaltungsort hinterlegt ist, wird keine Leerzeile angezeigt.
+= v1.2.1 (2017-03-16) =
+* Getestet mit WordPress 4.7.3
+* Kleinere grafische Versbesserung beim Logo
 = v1.0.1 (2016-12-7) =
 * Getestet mit WordPress 4.7
 = v1.0 (2016-11-25) =
