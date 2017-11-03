@@ -3,7 +3,7 @@
   Plugin Name: HiOrg-Server Termine
   Plugin URI: http://www.klebsattel.de
   Description: Termine Ihres HiOrg-Server in einem Widget darstellen.
-  Version: 1.2.1
+  Version: 1.2.2
   Author: Jörg Klebsattel
   Author URI: http://www.klebsattel.de
   License: GPL
@@ -42,7 +42,7 @@ function hiorg_termine() {
 
         $events = file_get_contents($url);
 	    $events_objekt = json_decode($events);
-
+		
         if ($events_objekt->{'success'} == 1) {
         
 			$events = repairJSON($events);
@@ -60,7 +60,14 @@ function hiorg_termine() {
 				if ($hiorg_date != "01.01.1970") {
 					echo '<div class="hiorgtermine">';
 					echo '<p>';
-					echo '<small>' . $hiorg_date . ' | ' . $hiorg_starttime . '-' . $hiorg_endetime . ' </small><br/>';
+					echo '<small>' . $hiorg_date . ' | ' . $hiorg_starttime;
+					
+					if ($hiorg_endetime !=0) {
+						echo '-' . $hiorg_endetime . ' </small><br/>';
+					} else {
+						echo ' </small><br/>';
+					}
+					
 					echo '<b>' . stripslashes($event->{'verbez'}) . '</b><br/>';
 					if (strlen ($event->{'verort'}) != 0) {
 						echo '<small>' . repairZeilenumbruch($event->{'verort'}) . '</small><br/>';
@@ -82,8 +89,8 @@ function hiorg_termine() {
 			echo '<div class="sidebox">';
 			echo '<h3 class="sidetitl">HiOrg-Server</h3>';
 			echo '<p><a href="https://www.hiorg-server.de/index.php?ov='.$account.'" target="_blank" ><img src="/wp-content/plugins/hiorgserver-terminliste/images/hiorgserver.jpg" style="padding: 5px 0px;"/></a></p>';
-			
-			echo '</div>';	
+			echo '</div>';
+				
 		}
     }
 }
