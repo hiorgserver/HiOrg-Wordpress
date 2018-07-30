@@ -31,6 +31,8 @@ nothing here
 Gute Nachrichten! Dieses Plugin kann von jedem genutzt werden. Da es unter der GPL veröffentlicht wurde, kann es auf jedem privaten und kommerziellen Blog benutzt werden.
  
 == Changelog ==
+= v1.2.3 (2018-07-30) =
+* Fehler bei Terminen ohne Endzeit behoben
 = v1.2.2 (2017-11-03) =
 * Getestet mit WordPress 4.8.3
 * Problem mit Endezeit und grafischer Darstellung behoben
