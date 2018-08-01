@@ -3,7 +3,7 @@
   Plugin Name: HiOrg-Server Termine
   Plugin URI: http://www.klebsattel.de
   Description: Termine Ihres HiOrg-Server in einem Widget darstellen.
-  Version: 1.2.2
+  Version: 1.2.3
   Author: Jörg Klebsattel
   Author URI: http://www.klebsattel.de
   License: GPL
@@ -54,7 +54,14 @@ function hiorg_termine() {
 				$event= json_decode($events[$counter]);
 				$hiorg_date = date('d.m.Y', $event->{'sortdate'});
 				$hiorg_starttime = date("H:i", $event->{'sortdate'});
-				$hiorg_endetime = date('H:i', $event->{'enddate'});
+
+				$hiorg_endetime = $event->{'enddate'};
+				if (is_numeric($hiorg_endetime) && ($hiorg_endetime>$event->{'sortdate'})) {
+				    $hiorg_endetime = date('H:i', $hiorg_endetime);
+                } else {
+				    $hiorg_endetime = 0;
+                }
+
 				$counter = $counter + 1;
 				
 				if ($hiorg_date != "01.01.1970") {
@@ -62,7 +69,7 @@ function hiorg_termine() {
 					echo '<p>';
 					echo '<small>' . $hiorg_date . ' | ' . $hiorg_starttime;
 					
-					if ($hiorg_endetime !=0) {
+					if ($hiorg_endetime != 0) {
 						echo '-' . $hiorg_endetime . ' </small><br/>';
 					} else {
 						echo ' </small><br/>';
