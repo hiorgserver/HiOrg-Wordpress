@@ -2,7 +2,7 @@
 Contributors: babsitz,hiorgserver
 Tags: hiorg-server, drk, terminliste, hiorg, hiorg server
 Requires at least: 3.0
-Tested up to: 4.9.9
+Tested up to: 5.0.0
 License: GPL
 
 Dieses Plugin zeigt in einem Widget die öffentlichen Terminen aus dem HiOrg-Server Ihrer Organisation an.
